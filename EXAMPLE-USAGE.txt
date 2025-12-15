@@ -1,0 +1,4 @@
+Example wiring (non-Symfony bootstrap):
+- Create key provider and owner provider (see examples).
+- Choose encryptor (SodiumEncryptor or HybridEncryptor).
+- Register EncryptSubscriber with Doctrine EventManager.

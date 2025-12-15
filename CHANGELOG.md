@@ -1,0 +1,1 @@
+# Changelog ## 0.1.0 - Initial - helpers for having encrypted and searchable data with doctrine ORM
