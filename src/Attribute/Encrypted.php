@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace NC\DoctrineEncrypt\Attribute; use Attribute;
+namespace NC\DoctrineEncrypt\Attribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class Encrypted
 {
-    public function __construct(public bool $index = false, public ?string $indexColumn = null)
-    {
-    }
+    public function __construct(public bool $index = false, public ?string $indexColumn = null) {}
 }

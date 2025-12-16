@@ -10,8 +10,7 @@ use NC\DoctrineEncrypt\Owner\OwnerProviderInterface;
 
 final class ReencryptService
 {
-    public function __construct( private EntityManagerInterface $em, private OwnerProviderInterface $ownerProvider )
-    {}
+    public function __construct(private EntityManagerInterface $em, private OwnerProviderInterface $ownerProvider) {}
 
     /**
      * Re-encrypt a field for a given entity class from $oldEncryptor to $newEncryptor.
@@ -39,19 +38,19 @@ final class ReencryptService
             $prop->setAccessible(true);
             $stored = $prop->getValue($entity);
 
-            if ($stored === null) {
+            if (null === $stored) {
                 continue;
             }
 
             $owner = $this->ownerProvider->getOwnerFor($entity);
 
-            if ($owner === null) {
+            if (null === $owner) {
                 continue;
             }
 
-            $plain = $oldEncryptor->decrypt((string)$stored, $owner);
+            $plain = $oldEncryptor->decrypt((string) $stored, $owner);
 
-            if ($plain === null) {
+            if (null === $plain) {
                 continue;
             }
 
@@ -61,7 +60,7 @@ final class ReencryptService
 
             // attempt to set index if present
             if ($computeIndex) {
-                $indexName = $fieldName . '_index';
+                $indexName = $fieldName.'_index';
                 if ($refl->hasProperty($indexName)) {
                     $idxProp = $refl->getProperty($indexName);
                     $idxProp->setAccessible(true);
@@ -69,8 +68,8 @@ final class ReencryptService
                 }
             }
             $this->em->persist($entity);
-            $count++;
-            if ($count % 50 === 0) {
+            ++$count;
+            if (0 === $count % 50) {
                 $this->em->flush();
                 $this->em->clear();
             }

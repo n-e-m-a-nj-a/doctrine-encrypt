@@ -10,9 +10,7 @@ namespace NC\DoctrineEncrypt\KeyProvider;
 final class StaticOwnerKeyProvider implements OwnerKeyProviderInterface
 {
     /** * @param array<string,array<string,string>> $map */
-    public function __construct(private array $map = [])
-    {
-    }
+    public function __construct(private array $map = []) {}
 
     public function getKeysForOwner(string $ownerId): array
     {

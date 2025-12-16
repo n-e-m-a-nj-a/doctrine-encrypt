@@ -10,10 +10,9 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-
- final class Encrypted {
-
+final class Encrypted
+{
     public $index = false;
 
-    public $indexColumn = null;
- }
+    public $indexColumn;
+}

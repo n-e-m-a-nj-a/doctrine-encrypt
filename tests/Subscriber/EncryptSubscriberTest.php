@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace NC\DoctrineEncrypt\Tests\Subscriber;
 
-use PHPUnit\Framework\TestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\IndexedReader;
-use NC\DoctrineEncrypt\Subscriber\EncryptSubscriber;
-use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
-use NC\DoctrineEncrypt\Encryptor\SodiumEncryptor;
-use NC\DoctrineEncrypt\Owner\OwnerProviderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use NC\DoctrineEncrypt\Encryptor\SodiumEncryptor;
+use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
+use NC\DoctrineEncrypt\Owner\OwnerProviderInterface;
+use NC\DoctrineEncrypt\Subscriber\EncryptSubscriber;
+use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class EncryptSubscriberTest extends TestCase
 {
     public function testPrePersistAndPostLoad()
@@ -23,7 +29,7 @@ class EncryptSubscriberTest extends TestCase
         $ownerId = 'user-123';
         $encKey = random_bytes(32);
         $indexKey = random_bytes(32);
-        $provider = new StaticOwnerKeyProvider([$ownerId => ['enc' => $encKey, 'index' => $indexKey, 'kid' => 'v1'],]);
+        $provider = new StaticOwnerKeyProvider([$ownerId => ['enc' => $encKey, 'index' => $indexKey, 'kid' => 'v1']]);
         $encryptor = new SodiumEncryptor($provider);
         $annotationReader = new AnnotationReader();
         $reader = new IndexedReader($annotationReader);
@@ -40,6 +46,7 @@ class EncryptSubscriberTest extends TestCase
                 if (method_exists($entity, 'getOwnerId')) {
                     return $entity->getOwnerId();
                 }
+
                 return $this->id;
             }
         };
@@ -72,7 +79,7 @@ class EncryptSubscriberTest extends TestCase
 
         $entity->setSecret('top');
 
-        $em = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $args = new LifecycleEventArgs($entity, $em);
 
         // prePersist should replace secret with ciphertext and set index

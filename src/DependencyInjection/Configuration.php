@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -15,18 +15,19 @@ final class Configuration implements ConfigurationInterface
         $root = $tb->getRootNode();
         $root->children()
             ->scalarNode('encryptor_service')
-                ->defaultNull()
-                ->end()
+            ->defaultNull()
+            ->end()
             ->scalarNode('owner_key_provider')
-                ->defaultNull()
-                ->end()
+            ->defaultNull()
+            ->end()
             ->scalarNode('owner_provider')
-                ->defaultNull()
-                ->end()
+            ->defaultNull()
+            ->end()
             ->booleanNode('enable_attributes')
-                ->defaultTrue()
-                ->end()
-            ->end();
+            ->defaultTrue()
+            ->end()
+            ->end()
+        ;
 
         return $tb;
     }

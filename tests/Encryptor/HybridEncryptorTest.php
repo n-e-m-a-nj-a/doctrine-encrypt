@@ -1,13 +1,18 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace NC\DoctrineEncrypt\Tests\Encryptor;
 
-use PHPUnit\Framework\TestCase;
-use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
 use NC\DoctrineEncrypt\Encryptor\HybridEncryptor;
+use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
+use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class HybridEncryptorTest extends TestCase
 {
     public function testHybridEncryptDecrypt()
@@ -20,7 +25,7 @@ class HybridEncryptorTest extends TestCase
         $pub = sodium_crypto_box_publickey($keypair);
         $kid = 'hk-v1';
         $indexKey = random_bytes(32);
-        $provider = new StaticOwnerKeyProvider([$owner => ['pub' => $pub, 'priv' => $keypair, 'index' => $indexKey, 'kid' => $kid],]);
+        $provider = new StaticOwnerKeyProvider([$owner => ['pub' => $pub, 'priv' => $keypair, 'index' => $indexKey, 'kid' => $kid]]);
         $enc = new HybridEncryptor($provider);
         $plaintext = 'hybrid secret';
         $res = $enc->encrypt($plaintext, $owner, true);

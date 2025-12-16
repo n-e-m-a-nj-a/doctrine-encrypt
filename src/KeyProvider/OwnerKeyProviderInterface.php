@@ -13,10 +13,9 @@ interface OwnerKeyProviderInterface
      *  - 'index' => raw index key
      *  - 'pub' => raw public key (for hybrid)
      *  - 'priv' => raw keypair (for hybrid decryption)
-     *  - 'kid' => key identifier/version string
+     *  - 'kid' => key identifier/version string.
      *
-     *  @param string $ownerId
-     *  @return array<string, string>
+     * @return array<string, string>
      */
     public function getKeysForOwner(string $ownerId): array;
 }

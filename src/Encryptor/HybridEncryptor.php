@@ -28,18 +28,19 @@ final class HybridEncryptor implements EncryptorInterface
         $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $ct = sodium_crypto_secretbox($plaintext, $nonce, $dataKey);
         $wrapped = sodium_crypto_box_seal($dataKey, $ownerPub);
-        $payload = ['v' => 1, 'mode' => 'hybrid', 'kid' => $kid, 'wk' => base64_encode($wrapped), 'nonce' => base64_encode($nonce), 'ct' => base64_encode($ct),];
+        $payload = ['v' => 1, 'mode' => 'hybrid', 'kid' => $kid, 'wk' => base64_encode($wrapped), 'nonce' => base64_encode($nonce), 'ct' => base64_encode($ct)];
         $index = null;
         if ($deterministic) {
-            if ($indexKey === null) {
+            if (null === $indexKey) {
                 throw new \RuntimeException('index key required for deterministic index');
             }
             $index = hash_hmac('sha256', $plaintext, $indexKey, false);
         }
         sodium_memzero($dataKey);
-        if ($indexKey !== null) {
+        if (null !== $indexKey) {
             sodium_memzero($indexKey);
         }
+
         return ['ciphertext' => base64_encode(json_encode($payload, JSON_UNESCAPED_SLASHES)), 'index' => $index];
     }
 
@@ -54,7 +55,7 @@ final class HybridEncryptor implements EncryptorInterface
 
         $ownerPriv = $keys['priv'];
         $raw = base64_decode($ciphertext, true);
-        if ($raw === false) {
+        if (false === $raw) {
             return null;
         }
         $data = json_decode($raw, true);
@@ -65,14 +66,15 @@ final class HybridEncryptor implements EncryptorInterface
         $nonce = base64_decode($data['nonce']);
         $ct = base64_decode($data['ct']);
         $dataKey = sodium_crypto_box_seal_open($wrapped, $ownerPriv);
-        if ($dataKey === false) {
+        if (false === $dataKey) {
             return null;
         }
         $plain = sodium_crypto_secretbox_open($ct, $nonce, $dataKey);
         sodium_memzero($dataKey);
-        if ($plain === false) {
+        if (false === $plain) {
             return null;
         }
+
         return $plain;
     }
 }

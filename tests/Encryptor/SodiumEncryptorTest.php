@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace NC\DoctrineEncrypt\Tests\Encryptor;
 
-use PHPUnit\Framework\TestCase;
-use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
 use NC\DoctrineEncrypt\Encryptor\SodiumEncryptor;
+use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
+use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class SodiumEncryptorTest extends TestCase
 {
     public function testEncryptDecryptAndIndex()
@@ -19,7 +24,7 @@ class SodiumEncryptorTest extends TestCase
         $encKey = random_bytes(32);
         $indexKey = random_bytes(32);
         $kid = 'v1';
-        $provider = new StaticOwnerKeyProvider([$owner => ['enc' => $encKey, 'index' => $indexKey, 'kid' => $kid],]);
+        $provider = new StaticOwnerKeyProvider([$owner => ['enc' => $encKey, 'index' => $indexKey, 'kid' => $kid]]);
         $enc = new SodiumEncryptor($provider);
         $plaintext = 'hello secret';
         $res = $enc->encrypt($plaintext, $owner, true);

@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace NC\DoctrineEncrypt\Tests\KeyProvider;
 
-use PHPUnit\Framework\TestCase;
 use NC\DoctrineEncrypt\KeyProvider\StaticOwnerKeyProvider;
+use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class StaticOwnerKeyProviderTest extends TestCase
 {
     public function testGetKeysForOwner()
